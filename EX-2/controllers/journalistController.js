@@ -41,7 +41,8 @@ export const deleteJournalistByID = (req, res) => {
     const index = journalists.findIndex( j => j.id === jID)
 
     if(index === -1) return res.status(404).json({error: "Journalist not founded"})
-    
+    articles.forEach( a => {if (a.journalistId === jID) a.journalistId = null})
+
     journalists.splice(index, 1)
     res.status(200).send()
 }

@@ -39,15 +39,17 @@ export const deleteCategoryByID = (req,res) => {
     const index = categories.findIndex( c => c.id === catID)
     if( index === -1) return res.status(404).json({error: "Category not founded"})
     
+
+    articles.forEach( a => {if (a.categoryId === catID) a.categoryId = null} )
     categories.splice(index, 1)
-    res.status(200).send()
+    res.status(204).send()
 }
 
 export const articleBySpecificCategoryID = (req, res) => {
     const categoryID = parseInt(req.params.id)
 
     const article = articles.filter( a => a.categoryId === categoryID )
-    if(!article) return res.status(200).json({error: "Article by specific category is not founded"})
+    if(article.length === 0) return res.status(200).json({error: "Article by specific category is not founded"})
     
     res.status(200).json(article)
 }
